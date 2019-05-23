@@ -8,7 +8,7 @@ function Params = GetParams(Params)
 Params.Verbose = true;
 
 %% Experiment
-Params.Task = 'Center-Out-1D';
+Params.Task = 'Exo-Control-1D';
 switch Params.ControlMode,
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -40,11 +40,11 @@ if strcmpi(Params.Subject,'Test'),
 end
 
 if IsWin,
-    projectdir = 'C:\Users\ganguly-lab2\Documents\MATLAB\Center-Out-1D\Center-Out-1D';
+    projectdir = 'C:\Users\ganguly-lab2\Documents\MATLAB\Exo-Control-1D';
 elseif IsOSX,
-    projectdir = '/Users/daniel/Projects/Center-Out-1D/';
+    projectdir = '/Users/daniel/Projects/Exo-Control-1D/';
 else,
-    projectdir = '~/Projects/Center-Out-1D/';
+    projectdir = '~/Projects/GangulyLab/Exo-Control-1D/';
     butter(1,[.1,.5]);
 end
 addpath(genpath(fullfile(projectdir,'TaskCode')));
