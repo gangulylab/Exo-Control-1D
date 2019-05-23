@@ -73,13 +73,14 @@ if Params.ArduinoSync,
     
     Params.Arduino.usePlanarAsCursor    = 1;
     
-    Params.Arduino.pos.minPos           = -300; % mm
+    Params.Arduino.pos.minPos            = -300; % mm
     Params.Arduino.pos.maxPos           =  300; % mm
-    Params.Arduino.pos.bits             =  12; % bits
-    Params.Arduino.pos.f_bits2pos       = @(bits) ((double(bits)./(2^Params.Arduino.pos.bits-1))...
+    Params.Arduino.pos.bits                 =  12; % bits
+    Params.Arduino.pos.f_bits2pos        = @(bits) ((double(bits)./(2^Params.Arduino.pos.bits-1))...
                 .*(Params.Arduino.pos.maxPos-Params.Arduino.pos.minPos)...
                 +Params.Arduino.pos.minPos);
     
+    Params.Arduino.command.gloveClose       = 0;
     Params.Arduino.command.planarEnable     = 0;    % 1-bit     Turn planar off and on
     Params.Arduino.command.velocityMode     = 0;    % 1-bit     Move to target, or accept sent velocities
     Params.Arduino.command.target           = 0;    % 4-bits    For 16 preset targets

@@ -131,10 +131,10 @@ switch Cursor.ControlMode,
             Cursor.State(2) = Vass;
         end
         
-        % bound at 100
+        % bound at 50
         speed = abs(Cursor.State(2));
-        if speed>100,
-            Cursor.State(2) = Cursor.State(2) * 100 / speed;
+        if speed>20,
+            Cursor.State(2) = Cursor.State(2) * 20 / speed;
         end
         
         % Update Intended Cursor State
@@ -151,6 +151,10 @@ end
 % update effective velocity command for screen output
 try,
     Cursor.Vcommand = Vcom;
+    if abs(Cursor.Vcommand)>50
+        Cursor.Vcommand = sign(Cursor.Vcommand)*50;
+    end
+%     fprintf('Vcom: %03.03f\n',Cursor.Vcommand);
 catch,
     Cursor.Vcommand = 0;
 end

@@ -25,7 +25,6 @@ Params.CLDA.AdaptType   = 'none'; % {'none','linear'}, affects assistance & lamb
 Params.InitializationMode = 3; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
 Params.MvmtAxisAngle    = 0;
 Params.BaselineTime     = 0; % secs
-
 %% Current Date and Time
 % get today's date
 now = datetime;
@@ -113,9 +112,9 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
 Params.NumImaginedBlocks  = 0;
-Params.NumAdaptBlocks       = 4;
+Params.NumAdaptBlocks       = 1;
 Params.NumFixedBlocks       = 0;
-Params.NumTrialsPerBlock    = 8;
+Params.NumTrialsPerBlock    = 4;
 Params.TargetSelectionFlag  = 1; % 1-pseudorandom, 2-random
 switch Params.TargetSelectionFlag,
     case 1, Params.TargetFunc = @(n) mod(randperm(n),Params.NumReachTargets)+1;
@@ -159,6 +158,7 @@ end
 %% Hold Times
 Params.TargetHoldTime = 4;
 Params.InterTrialInterval = 1;
+Params.InstructedGraspTime = 5;
 Params.InstructedDelayTime = 1;
 Params.MaxStartTime = 20;
 Params.MaxReachTime = 20;
