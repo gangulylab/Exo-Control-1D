@@ -42,7 +42,7 @@ end
 %%==========================================================================================================================
 % Move Planar system to the home position then disable it.
 Params.Arduino.planar.target            = 0;    % 1-bit     Move to Home
-Params.Arduino.glove.target             = 1;    % 4-bit 
+% Params.Arduino.glove.target             = 1;    % 4-bit 
 s_planarForceState;
 
 % Offer tempoary respite between trials
@@ -69,8 +69,8 @@ s_planarVolitional;
 s_planarForceState
 
 % Force to grasp
-Params.Arduino.glove.target = 0; % Set to grasp
-s_gloveForceState
+% Params.Arduino.glove.target = 0; % Set to grasp
+% s_gloveForceState
 
 % Offer tempoary respite between trials
 s_interTrialInterval;
@@ -83,8 +83,8 @@ s_planarInstructTarget;
 s_planarVolitional; 
 
 % Force to open
-Params.Arduino.glove.target = 2; % Set to open
-s_gloveForceState
+% Params.Arduino.glove.target = 2; % Set to open
+% s_gloveForceState
 
 
 % On completion of attempted return motion, disable planar and switch to position mode
