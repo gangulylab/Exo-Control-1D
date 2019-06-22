@@ -9,9 +9,8 @@ DrawFormattedText(Params.WPTR, tex,'center','center',255);
 Screen('Flip', Params.WPTR);
 
 % set velocity on exo to 0
-Params.Arduino.command.planarEnable     = 0;    % DisablePlanar
-[command,posX,posY] = UpdateArduino(Params.Arduino,Params.Arduino.command,0,0);
-Params.Arduino.command = command;
+Params.Arduino.planar.enable    = 0;    % Disable Planar
+Params.Arduino = UpdateArduino(Params.Arduino);
 
 % add event to data structure
 Data.Events(end+1).Time = GetSecs;
@@ -24,17 +23,19 @@ WaitSecs(.1);
 while 1, % pause until subject presses p again or quits
     [~, ~, keyCode, ~] = KbCheck;
     if keyCode(KbName('p'))==1,
+        fprint('\tUn-pause\n')
         keyCode(KbName('p'))=0; % set to 0 to avoid multiple pauses in a row
         fprintf('\b') % remove input keys
-        Params.Arduino.command.planarEnable     = 1;    % Enable Planar
-        [command,posX,posY] = UpdateArduino(Params.Arduino,Params.Arduino.command,0,0);
-        Params.Arduino.command = command;
+        Params.Arduino.planar.enable    = 1;    % Enable Planar
+        Params.Arduino = UpdateArduino(Params.Arduino);
         break;
     end
     if keyCode(KbName('escape'))==1 || keyCode(KbName('q'))==1,
+        fprintf('\tStopping Experiment\n')
         ExperimentStop(1,Params); % quit experiment
     end
     if keyCode(KbName('d'))==1,
+        fprintf('\tDEGUG MODE\n')
         keyboard; % quit experiment
     end
     

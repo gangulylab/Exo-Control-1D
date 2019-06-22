@@ -2,21 +2,18 @@ function ExperimentStop(fromPause,Params)
 if ~exist('fromPause', 'var'), fromPause = 0; end
 
 % Put the planar into a safe state
-Params.Arduino.command.planarEnable     = 1;    % Enable Planar
-Params.Arduino.command.velocityMode     = 0;    % Set to position mode
-Params.Arduino.command.target           = 0;    % Set target as home
-[command,posX,posY] = UpdateArduino(Params.Arduino,Params.Arduino.command,0,0);
-Params.Arduino.command = command;
-pause(0.5)
-while command.planarReady == 0
-    [command,posX,posY]         = UpdateArduino(Params.Arduino,Params.Arduino.command,0,0);
-    Params.Arduino.command      = command;
+Params.Arduino.planar.enable        = 1;    % Enable Planar
+Params.Arduino.planar.velocityMode  = 0;    % Set to position mode
+Params.Arduino.planar.target        = 0;    % Set target as home
+Params.Arduino = UpdateArduino(Params.Arduino);
+pause(1)
+while Params.Arduino.planar.ready == 0
+    Params.Arduino = UpdateArduino(Params.Arduino);
     pause(0.5)
 end
-Params.Arduino.command.planarEnable     = 0;    % Disable Planar
-[command,posX,posY] = UpdateArduino(Params.Arduino,Params.Arduino.command,0,0);
-
-
+Params.Arduino.planar.enable        = 0;    % Disable Planar
+Params.Arduino.glove.enable         = 0;
+Params.Arduino = UpdateArduino(Params.Arduino);
 
 % Close Screen
 Screen('CloseAll');

@@ -40,7 +40,7 @@ if strcmpi(Params.Subject,'Test'),
 end
 
 if IsWin,
-    projectdir = 'C:\Users\ganguly-lab2\Documents\MATLAB\Exo-Control-1D';
+    projectdir = 'D:\new_planar\Exo-Control-1D';
 elseif IsOSX,
     projectdir = '/Users/daniel/Projects/Exo-Control-1D/';
 else,
@@ -111,10 +111,10 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks  = 0;
+Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 1;
 Params.NumFixedBlocks       = 0;
-Params.NumTrialsPerBlock    = 4;
+Params.NumTrialsPerBlock    = 2;
 Params.TargetSelectionFlag  = 1; % 1-pseudorandom, 2-random
 switch Params.TargetSelectionFlag,
     case 1, Params.TargetFunc = @(n) mod(randperm(n),Params.NumReachTargets)+1;
@@ -158,7 +158,7 @@ end
 %% Hold Times
 Params.TargetHoldTime = 4;
 Params.InterTrialInterval = 1;
-Params.InstructedGraspTime = 5;
+Params.InstructedGraspTime = 2;
 Params.InstructedDelayTime = 1;
 Params.MaxStartTime = 20;
 Params.MaxReachTime = 20;

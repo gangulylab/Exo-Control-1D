@@ -76,16 +76,11 @@ s_gloveForceState
 s_interTrialInterval;
 
 % Instruct Home
-Params.Arduino.planar.target = 0;
+Params.Arduino.planar.target           = 0;
 s_planarInstructTarget;
 
 % Allow volitional movements
 s_planarVolitional; 
-
-% Force to open
-Params.Arduino.glove.target = 2; % Set to open
-s_gloveForceState
-
 
 % On completion of attempted return motion, disable planar and switch to position mode
 Params.Arduino.planar.enable        = 0;    % 1-bit     Move to target, or accept sent velocities
