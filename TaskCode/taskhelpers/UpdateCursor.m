@@ -175,7 +175,7 @@ Params.Arduino = UpdateArduino(Params.Arduino);
 % pos = min([pos,+bound]); % p-right
 % Cursor.State(1) = pos;
 
-% Cursor position assumes planar position
-Cursor.State(1) = Params.Arduino.planar.pos(1);
+% % Cursor position assumes planar position
+% Cursor.State(1) = Params.Arduino.planar.pos(1);
 
 end % UpdateCursor

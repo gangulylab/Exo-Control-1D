@@ -18,13 +18,14 @@ end
 
 %% Control
 Params.Gain             = 1;
-Params.CenterReset      = false;
+Params.CenterReset      = true;
 Params.Assistance       = 0.2; % value btw 0 and 1, 1 full assist
 Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'none'; % {'none','linear'}, affects assistance & lambda for rml
 Params.InitializationMode = 3; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.MvmtAxisAngle    = 0;
+Params.MvmtAxisAngle    = 270;
 Params.BaselineTime     = 0; % secs
+
 %% Current Date and Time
 % get today's date
 now = datetime;
@@ -67,7 +68,7 @@ Params.ScreenRefreshRate = 10; % Hz
 Params.UpdateRate = 10; %10 = Imagined; 5 = control % Hz
 
 %% Targets
-Params.TargetSize = 50;
+Params.TargetSize = 70;
 Params.OutTargetColor = [55,255,0];
 Params.InTargetColor = [255,55,0];
 

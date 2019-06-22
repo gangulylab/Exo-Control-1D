@@ -195,6 +195,17 @@ if ~Data.ErrorID,
         % end if in start target for hold time
         if InTargetTotalTime > Params.TargetHoldTime,
             done = 1;
+            
+            % Force to grasp
+            if Data.TargetID==1,
+                if Params.ArduinoSync,
+                    PulseArduino(Params.ArduinoPtr,...
+                        Params.ArduinoPin,...
+                        6);
+                end
+                Params.Arduino.glove.target = 0; % Set to grasp
+                s_gloveForceState
+            end
         end
     end % Reach Target Loop
 end % only complete if no errors
