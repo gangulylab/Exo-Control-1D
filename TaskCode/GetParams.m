@@ -17,14 +17,15 @@ switch Params.ControlMode,
 end
 
 %% Control
-Params.Gain             = 1;
-Params.CenterReset      = true;    
+Params.Gain             = 8;
+Params.CenterReset      = false;    
 Params.Assistance       = 0.0;      % value btw 0 and 1, 1 full assist
 Params.CLDA.Type        = 3;        % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'none';   % {'none','linear'}, affects assistance & lambda for rml
 Params.InitializationMode = 3;      % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
 Params.MvmtAxisAngle    = 0;        
 Params.BaselineTime     = 0;        % secs
+
 %% Current Date and Time
 % get today's date
 now = datetime;
@@ -89,10 +90,11 @@ Params.CursorRect = [-Params.CursorSize -Params.CursorSize ...
 %% Kalman Filter Properties
 a = 0.825;
 w = 150;
-dt = 1/Params.UpdateRate;
+G = Params.Gain;
+t = 1/Params.UpdateRate;
 if Params.ControlMode>=3,
     Params.KF.A = [...
-        1	dt	0;
+        1	G*t	0;
         0	a	0;
         0	0	1];
     Params.KF.W = [...

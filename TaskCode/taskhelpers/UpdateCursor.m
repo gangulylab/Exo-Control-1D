@@ -14,7 +14,7 @@ function [KF,Params] = UpdateCursor(Params,Neuro,TaskFlag,TargetPos,KF)
 global Cursor
 
 % query optimal control policy
-Vopt = Params.Gain * OptimalCursorUpdate(Params,TargetPos);
+Vopt = OptimalCursorUpdate(Params,TargetPos);
 
 if TaskFlag==1, % do nothing during imagined movements
     Vcom = Cursor.State(2);
@@ -100,16 +100,17 @@ switch Cursor.ControlMode,
         % Kalman Predict Step
         X = A*X;
         P = A*P*A' + W;
-        
-        % Kalman Update Step
         C = KF.C;
-        if KF.CLDA.Type==3, % continue to use this kalman gain during fixed
-            Q = KF.Q; % faster since avoids updating Qinv online
-            K = P*C'/(C*P*C' + Q);
-        else, % faster once Qinv is computed (fixed decoder or refit/batch)
-            Qinv = KF.Qinv;
-            K = P*C'*Qinv*(eye(size(Y,1)) - C/(inv(P) + C'*Qinv*C)*(C'*Qinv)); % RML Kalman Gain eq (~8ms)
-        end
+        Q = KF.Q;
+        
+        % Kalman Predict Step
+        X = A*X;
+        P = A*P*A' + W;
+        P(1,:) = zeros(1,3); % zero out pos and pos-vel terms
+        P(:,1) = zeros(3,1); % innovation from refit
+
+        % Kalman Update Step
+        K = P*C'/(C*P*C' + Q);
         X = X + K*(Y - C*X);
         P = P - K*C*P;
         
