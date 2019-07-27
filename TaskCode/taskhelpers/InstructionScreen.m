@@ -1,11 +1,8 @@
 function InstructionScreen(Params,tex)
 % Display text then wait for subject to resume experiment
 
-[command,posX,posY]             = UpdateArduino(Params.Arduino,Params.Arduino.command,0,0);
-Params.Arduino.command          = command;
-Params.Arduino.pos.planarPos    = [posX;posY];
-% writeDigitalPin(Params.ArduinoPtr, Params.ArduinoTargetPins{1}, 0); % make sure the pin is at 0
-% writeDigitalPin(Params.ArduinoPtr, Params.ArduinoTargetPins{2}, 0); % make sure the pin is at 0
+Params.Arduino.planar.enable = 0;
+Params.Arduino  = UpdateArduino(Params.Arduino);
 
 % Pause Screen
 DrawFormattedText(Params.WPTR, tex,'center','center',255);

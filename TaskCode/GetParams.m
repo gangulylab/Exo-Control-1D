@@ -8,7 +8,7 @@ function Params = GetParams(Params)
 Params.Verbose = true;
 
 %% Experiment
-Params.Task = 'Center-Out-1D';
+Params.Task = 'Exo-Control-1D';
 switch Params.ControlMode,
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -18,14 +18,13 @@ end
 
 %% Control
 Params.Gain             = 1;
-Params.CenterReset      = false;
-Params.Assistance       = 0.2; % value btw 0 and 1, 1 full assist
-Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
-Params.CLDA.AdaptType   = 'none'; % {'none','linear'}, affects assistance & lambda for rml
-Params.InitializationMode = 3; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.MvmtAxisAngle    = 0;
-Params.BaselineTime     = 0; % secs
-
+Params.CenterReset      = true;    
+Params.Assistance       = 0.0;      % value btw 0 and 1, 1 full assist
+Params.CLDA.Type        = 3;        % 0-none, 1-refit, 2-smooth batch, 3-RML
+Params.CLDA.AdaptType   = 'none';   % {'none','linear'}, affects assistance & lambda for rml
+Params.InitializationMode = 3;      % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
+Params.MvmtAxisAngle    = 0;        
+Params.BaselineTime     = 0;        % secs
 %% Current Date and Time
 % get today's date
 now = datetime;
@@ -41,11 +40,11 @@ if strcmpi(Params.Subject,'Test'),
 end
 
 if IsWin,
-    projectdir = 'C:\Users\ganguly-lab2\Documents\MATLAB\Center-Out-1D\Center-Out-1D';
+    projectdir = 'D:\new_planar\Exo-Control-1D';
 elseif IsOSX,
-    projectdir = '/Users/daniel/Projects/Center-Out-1D/';
+    projectdir = '/Users/daniel/Projects/Exo-Control-1D/';
 else,
-    projectdir = '~/Projects/Center-Out-1D/';
+    projectdir = '~/Projects/GangulyLab/Exo-Control-1D/';
     butter(1,[.1,.5]);
 end
 addpath(genpath(fullfile(projectdir,'TaskCode')));
@@ -68,7 +67,7 @@ Params.ScreenRefreshRate = 10; % Hz
 Params.UpdateRate = 10; %10 = Imagined; 5 = control % Hz
 
 %% Targets
-Params.TargetSize = 50;
+Params.TargetSize = 70;
 Params.OutTargetColor = [55,255,0];
 Params.InTargetColor = [255,55,0];
 
@@ -79,7 +78,7 @@ Params.TargetRect = ...
 Params.ReachTargetRadius = 100;
 Params.ReachTargetPositions = Params.StartTargetPosition + ...
     [-Params.ReachTargetRadius; +Params.ReachTargetRadius];
-Params.NumReachTargets = 2;
+Params.NumReachTargets = 1;
 
 %% Cursor
 Params.CursorColor = [95, 6, 150];
@@ -88,16 +87,18 @@ Params.CursorRect = [-Params.CursorSize -Params.CursorSize ...
     +Params.CursorSize +Params.CursorSize];
 
 %% Kalman Filter Properties
+a = 0.825;
+w = 150;
 dt = 1/Params.UpdateRate;
 if Params.ControlMode>=3,
     Params.KF.A = [...
-        1       dt      0;
-        0       .8      0;
-        0       0       1];
+        1	dt	0;
+        0	a	0;
+        0	0	1];
     Params.KF.W = [...
-        0       0       0;
-        0       750     0;
-        0       0       0];
+        0	0	0;
+        0	w	0;
+        0	0	0];
     Params.KF.P = eye(3);
     Params.KF.InitializationMode = Params.InitializationMode; % 1-imagined mvmts, 2-shuffled
     if Params.ControlMode==4, % set velocity kalman filter flag
@@ -112,10 +113,10 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks  = 0;
-Params.NumAdaptBlocks       = 4;
+Params.NumImaginedBlocks    = 0;
+Params.NumAdaptBlocks       = 1;
 Params.NumFixedBlocks       = 0;
-Params.NumTrialsPerBlock    = 8;
+Params.NumTrialsPerBlock    = 2;
 Params.TargetSelectionFlag  = 1; % 1-pseudorandom, 2-random
 switch Params.TargetSelectionFlag,
     case 1, Params.TargetFunc = @(n) mod(randperm(n),Params.NumReachTargets)+1;
@@ -129,8 +130,8 @@ Params.CLDA.TypeStr     = TypeStrs{Params.CLDA.Type+1};
 Params.CLDA.UpdateTime = 80; % secs, for smooth batch
 Params.CLDA.Alpha = exp(log(.5) / (120/Params.CLDA.UpdateTime)); % for smooth batch
 
-Params.CLDA.Lambda = 500; %exp(log(.5) / (30*Params.UpdateRate)); % for RML
-Params.CLDA.FinalLambda = 500; %exp(log(.5) / (500*Params.UpdateRate));
+Params.CLDA.Lambda = 5000; %exp(log(.5) / (30*Params.UpdateRate)); % for RML
+Params.CLDA.FinalLambda = 5000; %exp(log(.5) / (500*Params.UpdateRate));
 DeltaLambda = (Params.CLDA.FinalLambda - Params.CLDA.Lambda) ...
     / ((Params.NumAdaptBlocks-2)...
     *Params.NumTrialsPerBlock...
@@ -159,7 +160,8 @@ end
 %% Hold Times
 Params.TargetHoldTime = 4;
 Params.InterTrialInterval = 1;
-Params.InstructedDelayTime = 1;
+Params.InstructedGraspTime = 8;
+Params.InstructedDelayTime = 0.1;
 Params.MaxStartTime = 20;
 Params.MaxReachTime = 20;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen

@@ -1,4 +1,4 @@
-function ExperimentStart(Subject,ControlMode,BLACKROCK,DEBUG)
+ function ExperimentStart(Subject,ControlMode,BLACKROCK,DEBUG)
 % function ExperimentStart(Subject,ControlMode)
 % Subject - string for the subject id
 % ControlMode - [1,2,3,4] for mouse pos, mouse vel, pos/vel kalman, vel
@@ -49,45 +49,53 @@ if Params.SerialSync,
     fprintf(Params.SerialPtr, '%s\n', 'START');
 end
 if Params.ArduinoSync,
-    %Params.ArduinoPtr = arduino('COM45','Due','Libraries','I2C');
-    Params.ArduinoPtr = arduino('/dev/ttyACM0','Due','Libraries','I2C');
+    Params.ArduinoPtr = arduino('COM41','Due','Libraries','I2C');   % Planar Laptop
+%     Params.ArduinoPtr = arduino('COM9','Due','Libraries','I2C');  % Rob's Laptop
+%     Params.ArduinoPtr = arduino('/dev/ttyACM0','Due','Libraries','I2C');
     Params.ArduinoPin = 'D13';
     writeDigitalPin(Params.ArduinoPtr, Params.ArduinoPin, 0); % make sure the pin is at 0
     PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,20);
     
-    Params.Arduino.devBBS           = i2cdev(Params.ArduinoPtr,'0x01','bus',0); % BBS is on Brain Box bus I2C0, device 1
-    Params.Arduino.vel.minSpeed     = -100; % mm/s
-    Params.Arduino.vel.maxSpeed     =  100; % mm/s
-    Params.Arduino.vel.bits         =  12; % bits
-    Params.Arduino.vel.f_speed2bits = @(speed) round(((speed-Params.Arduino.vel.minSpeed)...
-                ./(Params.Arduino.vel.maxSpeed-Params.Arduino.vel.minSpeed))...
-                .*(2^Params.Arduino.vel.bits-1));
+    Params.Arduino.devBBS   = i2cdev(Params.ArduinoPtr,'0x01','bus',0); % BBS is on Brain Box bus I2C0, device 1
+    Params.Arduino.planar.velParams.minSpeed     = -100; % mm/s
+    Params.Arduino.planar.velParams.maxSpeed     =  100; % mm/s
+    Params.Arduino.planar.velParams.bits         =  12; % bits
+    Params.Arduino.planar.velParams.f_speed2bits      = @(speed) round(((speed-Params.Arduino.planar.velParams.minSpeed)...
+                                                            ./(Params.Arduino.planar.velParams.maxSpeed-Params.Arduino.planar.velParams.minSpeed))...
+                                                            .*(2^Params.Arduino.planar.velParams.bits-1));
 
-	Params.Arduino.pos.screenResolution = [1920,1080];
-% 	Params.Arduino.pos.screenResolution = [1600,900];
-    Params.Arduino.pos.planarBounds     = [-300,300,-10,300];   % mm
-    Params.Arduino.pos.planarPlotLoc    = [Params.Arduino.pos.screenResolution(1)/2,...
-                                            Params.Arduino.pos.screenResolution(2)/2+...
-                                                -(Params.Arduino.pos.planarBounds(4)-Params.Arduino.pos.planarBounds(3))/2];           % mm
-    Params.Arduino.pos.planarPos        = [0;0];            % mm
+% 	Params.Arduino.planar.posParams.screenResolution  = [1920,1080];  % Fancy B1 Monitor
+	Params.Arduino.planar.posParams.screenResolution  = [1680,1050];  % Monitor in 133SDH
+% 	Params.Arduino.planar.posParams.screenResolution  = [1920,1200];  % Star Monitor in 133SDH
+% 	Params.Arduino.planar.posParams.screenResolution  = [1600,900];   % Labtop
+    Params.Arduino.planar.posParams.planarBounds      = [-300,300,-10,300];   % mm
+    Params.Arduino.planar.posParams.planarPlotLoc     = [Params.Arduino.planar.posParams.screenResolution(1)/2,...
+                                                            Params.Arduino.planar.posParams.screenResolution(2)/2+...
+                                                            -(Params.Arduino.planar.posParams.planarBounds(4)-Params.Arduino.planar.posParams.planarBounds(3))/2];           % mm
+    Params.Arduino.planar.pos   = [0;0];            % mm
     
-    Params.Arduino.usePlanarAsCursor    = 1;
+    Params.Arduino.planar.usePlanarAsCursor     = 1;
     
-    Params.Arduino.pos.minPos           = -300; % mm
-    Params.Arduino.pos.maxPos           =  300; % mm
-    Params.Arduino.pos.bits             =  12; % bits
-    Params.Arduino.pos.f_bits2pos       = @(bits) ((double(bits)./(2^Params.Arduino.pos.bits-1))...
-                .*(Params.Arduino.pos.maxPos-Params.Arduino.pos.minPos)...
-                +Params.Arduino.pos.minPos);
+    Params.Arduino.planar.posParams.minPos            = -300; % mm
+    Params.Arduino.planar.posParams.maxPos            =  300; % mm
+    Params.Arduino.planar.posParams.bits              =  12; % bits
+    Params.Arduino.planar.posParams.f_bits2pos        = @(bits) ((double(bits)./(2^Params.Arduino.planar.posParams.bits-1))...
+                                                            .*(Params.Arduino.planar.posParams.maxPos-Params.Arduino.planar.posParams.minPos)...
+                                                            +Params.Arduino.planar.posParams.minPos);
     
-    Params.Arduino.command.planarEnable     = 0;    % 1-bit     Turn planar off and on
-    Params.Arduino.command.velocityMode     = 0;    % 1-bit     Move to target, or accept sent velocities
-    Params.Arduino.command.target           = 0;    % 4-bits    For 16 preset targets
+    Params.Arduino.planar.enable                = 0;    % 1-bit     Turn planar off and on
+    Params.Arduino.planar.velocityMode          = 0;    % 1-bit     Move to target, or accept sent velocities
+    Params.Arduino.planar.target                = 0;    % 4-bits    For 16 preset targets
+    Params.Arduino.planar.vel   = [0;0];
     
-    [command,posX,posY]             = UpdateArduino(Params.Arduino,Params.Arduino.command,0,0);
-    Params.Arduino.command          = command;
-    Params.Arduino.pos.planarPos    = [posX;posY];
     
+    Params.Arduino.glove.enable                = 0;    % 1-bit     Turn planar off and on
+    Params.Arduino.glove.admittanceMode        = 0;    % 1-bit     Move to target, or accept sent velocities
+    Params.Arduino.glove.target                = 0;    % 4-bits    For 16 preset targets
+    
+    
+    
+    Params.Arduino  = UpdateArduino(Params.Arduino);    
 end
 
 
@@ -199,6 +207,7 @@ end
 if DEBUG
     [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', 0, 0, [50 50 1000 1000]);
 else
+%     Screen('Preference', 'SkipSyncTests', 1);
     [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', max(Screen('Screens')), 0);
 end
 Params.Center = [mean(Params.ScreenRectangle([1,3])),mean(Params.ScreenRectangle([2,4]))];
@@ -267,6 +276,7 @@ catch ME, % handle errors gracefully
         end
         fprintf(1,'\n%s\n', errorMessage);
     end
+    
     keyboard;
 end
 

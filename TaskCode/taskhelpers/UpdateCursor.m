@@ -19,10 +19,12 @@ Vopt = Params.Gain * OptimalCursorUpdate(Params,TargetPos);
 if TaskFlag==1, % do nothing during imagined movements
     Vcom = Cursor.State(2);
     Cursor.Vcommand = Vcom;
-    
-    [command,posX,posY] = UpdateArduino(Params.Arduino,Params.Arduino.command,Cursor.Vcommand,0);
-    Params.Arduino.command = command;
-    Params.Arduino.pos.planarPos = [posX;posY];
+    if abs(Cursor.Vcommand)>100
+        Cursor.Vcommand = 0;
+    end
+%     disp(Cursor.Vcommand)
+    Params.Arduino.planar.vel = [Cursor.Vcommand;0];
+    Params.Arduino  = UpdateArduino(Params.Arduino);
     
     return;
 end
@@ -131,10 +133,10 @@ switch Cursor.ControlMode,
             Cursor.State(2) = Vass;
         end
         
-        % bound at 100
+        % bound at 50
         speed = abs(Cursor.State(2));
-        if speed>100,
-            Cursor.State(2) = Cursor.State(2) * 100 / speed;
+        if speed>20,
+            Cursor.State(2) = Cursor.State(2) * 20 / speed;
         end
         
         % Update Intended Cursor State
@@ -151,14 +153,17 @@ end
 % update effective velocity command for screen output
 try,
     Cursor.Vcommand = Vcom;
+    if abs(Cursor.Vcommand)>50
+        Cursor.Vcommand = sign(Cursor.Vcommand)*50;
+    end
+%     fprintf('Vcom: %03.03f\n',Cursor.Vcommand);
 catch,
     Cursor.Vcommand = 0;
 end
 
 % write to arduino to exo
-[command,posX,posY]             = UpdateArduino(Params.Arduino,Params.Arduino.command,Cursor.Vcommand,0);
-Params.Arduino.command          = command;
-Params.Arduino.pos.planarPos    = [posX;posY];
+Params.Arduino.planar.vel = [Cursor.Vcommand;0];
+Params.Arduino = UpdateArduino(Params.Arduino);
 
 
 % % bound cursor position to size of screen
@@ -171,6 +176,6 @@ Params.Arduino.pos.planarPos    = [posX;posY];
 % Cursor.State(1) = pos;
 
 % Cursor position assumes planar position
-Cursor.State(1) = posX;
+Cursor.State(1) = Params.Arduino.planar.pos(1);
 
 end % UpdateCursor

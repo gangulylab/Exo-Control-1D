@@ -1,26 +1,66 @@
-function [command,posX,posY] = UpdateArduino(Arduino,command,velX,velY)
+function [Arduino] = UpdateArduino(Arduino)
 
-if ~exist('command','var'),
-    command = 0;
-end
-if ~exist('velX','var'),
-    velX = 0;
-end
-if ~exist('velY','var')
-    velY = 0;
-end
+%% Covert Actual Values into Bytes 
+bytePlanarMode  = bitshift(Arduino.planar.enable,5)...
+                    + bitshift(Arduino.planar.velocityMode,4)...
+                    + bitshift(Arduino.planar.target,0);
+bitsPlanarVelX  = round(Arduino.planar.velParams.f_speed2bits(Arduino.planar.vel(1)));
+bitsPlanarVelY  = round(Arduino.planar.velParams.f_speed2bits(Arduino.planar.vel(2)));
+
+bytePlanarVelX  = typecast(bitshift(uint16(bitsPlanarVelX),4), 'uint8');
+bytePlanarVelY  = typecast(uint16(bitsPlanarVelY), 'uint8');
 
 
-% fprintf('Sent Vels: %03.02f, %03.02f\n',velX,velY);
-xVelVal     = round(Arduino.vel.f_speed2bits(velX));
-yVelVal     = round(Arduino.vel.f_speed2bits(velY));
+byteGloveMode  = bitshift(Arduino.glove.enable,5)...
+                    + bitshift(Arduino.glove.admittanceMode,4)...
+                    + bitshift(Arduino.glove.target,0);
+                
 
-% fprintf('Sent Vel Vals: %04.02i, %04.02i\n',xVelVal,yVelVal);
-[command,xPosVal,yPosVal] = f_commBBS(Arduino.devBBS,command,xVelVal,yVelVal);
-% fprintf('Received Pos Vals: %04.02i, %04.02i\n',xPosVal,yPosVal);
+byte1   = bytePlanarMode;
+byte2   = bytePlanarVelX(2);
+byte3   = bytePlanarVelY(2)+bytePlanarVelX(1);
+byte4   = bytePlanarVelY(1);
 
-posX = Arduino.pos.f_bits2pos(xPosVal);
-posY = Arduino.pos.f_bits2pos(yPosVal);
-% fprintf('Received Pos: %03.02f, %03.02f\n',posX,posY);
+byte5   = byteGloveMode;
+
+%% Write to BBS
+write(Arduino.devBBS,[byte1,byte2,byte3,byte4,byte5])
+
+%% Read from BBS
+readBytes   = read(Arduino.devBBS,8);
+bytePlanarStatus = readBytes(1);
+
+bytePlanarPosXHigh  = readBytes(2);
+bytePlanarPosXLow   = bitand(readBytes(3), 240);
+bytePlanarPosYHigh  = bitand(readBytes(3), 15);
+bytePlanarPosYLow   = readBytes(4);
+
+Arduino.planar.ready     = bitget(bytePlanarStatus,6);
+
+bitsPlanarPosX  = typecast(uint8([bytePlanarPosXLow,bytePlanarPosXHigh]), 'uint16');
+bitsPlanarPosX  = bitshift(bitsPlanarPosX,-4);
+bitsPlanarPosY  = typecast(uint8([bytePlanarPosYLow,bytePlanarPosYHigh]), 'uint16');
+
+
+byteGloveStatus     = readBytes(5);
+
+byteGlovePosHigh    = readBytes(6);
+byteGlovePosLow     = bitand(readBytes(7), 240);
+byteGloveForceHigh  = bitand(readBytes(7), 15);
+byteGloveForceLow   = readBytes(8);
+
+Arduino.glove.ready = bitget(byteGloveStatus,6);
+
+bitsGlovePos    = typecast(uint8([byteGlovePosLow,byteGlovePosHigh]), 'uint16');
+bitsGlovePos    = bitshift(bitsGlovePos,-4);
+bitsGloveForce  = typecast(uint8([byteGloveForceLow,byteGloveForceHigh]), 'uint16');
+
+%% Covert Bytes into Actual Values
+Arduino.planar.pos = [Arduino.planar.posParams.f_bits2pos(bitsPlanarPosX);...
+                        Arduino.planar.posParams.f_bits2pos(bitsPlanarPosY)];
+
+Arduino.glove.pos   = bitsGlovePos;
+Arduino.glove.force = bitsGloveForce;
+
 
 end
