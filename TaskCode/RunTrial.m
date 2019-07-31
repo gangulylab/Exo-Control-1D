@@ -76,8 +76,9 @@ if Data.ErrorID==0,
     end
 else
     % reset cursor
-    Cursor.State = [0,0,1]';
-    Cursor.IntendedState = [0,0,1]';
+    Cursor.ClickState = 0;
+    
+    fprintf('ERROR: %s\n', Data.ErrorStr)
 
     if Params.FeedbackSound,
         sound(Params.ErrorSound,Params.ErrorSoundFs)

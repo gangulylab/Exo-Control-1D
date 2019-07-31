@@ -26,6 +26,8 @@ Params.InitializationMode = 3;      % 1-imagined mvmts, 2-shuffled imagined mvmt
 Params.MvmtAxisAngle    = 0;        
 Params.BaselineTime     = 0;        % secs
 
+%% Cursor Click
+Params.ClickerBins = 1;
 %% Current Date and Time
 % get today's date
 now = datetime;

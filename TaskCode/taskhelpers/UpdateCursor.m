@@ -29,6 +29,23 @@ if TaskFlag==1, % do nothing during imagined movements
     return;
 end
 
+% decode click
+ if Params.GenNeuralFeaturesFlag,
+    [~,~,B] = GetMouse();
+    Clicking = any(B);
+else,
+    Clicking = Clicker.Func(Neuro.NeuralFeatures);
+end
+% must click for X bins in a row
+if Clicking==-1, % clicking
+    Cursor.ClickState = Cursor.ClickState + 1;
+    %Cursor.State(3:4) = 0;
+    return;
+else, % not clicking
+    Cursor.ClickState = 0;
+end
+
+
 % find vx and vy using control scheme
 switch Cursor.ControlMode,
     case 1, % Move to Mouse

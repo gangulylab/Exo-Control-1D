@@ -153,6 +153,11 @@ else,
     KF = [];
 end
 
+%% Load Clicker
+f = load(fullfile('clicker','clicker_svm_mdl.mat'));
+Clicker.Model = f.model;
+Clicker.Func = @ (X) click_classifier(X,Clicker.Model);
+
 %% Check Important Params with User
 LogicalStr = {'off', 'on'};
 IMStr = {'imagined mvmts', 'shuffled imagined mvmts', 'prev mvmts', 'prev adapted'};
