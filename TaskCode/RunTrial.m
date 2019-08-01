@@ -1,4 +1,4 @@
-function [Data, Neuro, KF, Params] = RunTrial(Data,Params,Neuro,TaskFlag,KF)
+function [Data, Neuro, KF, Params,Clicker] = RunTrial(Data,Params,Neuro,TaskFlag,KF,Clicker)
 % Runs a trial, saves useful data along the way
 % Each trial contains the following pieces
 % 1) Inter-trial interval

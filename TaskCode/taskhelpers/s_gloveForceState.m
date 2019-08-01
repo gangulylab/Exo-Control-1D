@@ -80,7 +80,7 @@ if ~Data.ErrorID && Params.InstructedGraspTime>0,
             Data.PlanarState(:,end+1) = Params.Arduino.planar.pos(1);
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
-
+            Data.ClickerState(1,end+1) = Cursor.ClickState;
             % start target
             if Params.DrawVelCommand.Flag && TaskFlag>1,
                 VelRect = Params.DrawVelCommand.Rect;

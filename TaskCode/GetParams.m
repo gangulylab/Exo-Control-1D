@@ -22,12 +22,14 @@ Params.CenterReset      = false;
 Params.Assistance       = 0.0;      % value btw 0 and 1, 1 full assist
 Params.CLDA.Type        = 3;        % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'none';   % {'none','linear'}, affects assistance & lambda for rml
-Params.InitializationMode = 3;      % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
+Params.InitializationMode =4;      % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
 Params.MvmtAxisAngle    = 0;        
-Params.BaselineTime     = 0;        % secs
+Params.BaselineTime     = 2;        % secs
 
 %% Cursor Click
 Params.ClickerBins = 1;
+Params.ClickingColor = [235, 52, 189];
+
 %% Current Date and Time
 % get today's date
 now = datetime;
@@ -66,11 +68,11 @@ Params.BaudRate = 115200;
 Params.ArduinoSync = true;
 
 %% Timing
-Params.ScreenRefreshRate = 10; % Hz
-Params.UpdateRate = 10; %10 = Imagined; 5 = control % Hz
+Params.ScreenRefreshRate = 5; % Hz
+Params.UpdateRate = 5; %10 = Imagined; 5 = control % Hz
 
 %% Targets
-Params.TargetSize = 70;
+Params.TargetSize = 50;
 Params.OutTargetColor = [55,255,0];
 Params.InTargetColor = [255,55,0];
 
@@ -79,9 +81,11 @@ Params.TargetRect = ...
     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
 
 Params.ReachTargetRadius = 100;
+% Params.ReachTargetPositions = Params.StartTargetPosition + ...
+%     [-Params.ReachTargetRadius; +Params.ReachTargetRadius]; % left and right
 Params.ReachTargetPositions = Params.StartTargetPosition + ...
-    [-Params.ReachTargetRadius; +Params.ReachTargetRadius];
-Params.NumReachTargets = 1;
+    [-Params.ReachTargetRadius]; % only left
+Params.NumReachTargets = length(Params.ReachTargetPositions);
 
 %% Cursor
 Params.CursorColor = [95, 6, 150];

@@ -90,7 +90,7 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             Data.PlanarState(:,end+1) = Params.Arduino.planar.pos(1);
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
-
+            Data.ClickerState(1,end+1) = Cursor.ClickState;
             % start target
             StartRect = Params.TargetRect; % centered at (0,0)
             x = StartTargetPos*cosd(Params.MvmtAxisAngle);

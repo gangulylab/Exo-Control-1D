@@ -1,4 +1,6 @@
  function ExperimentStart(Subject,ControlMode,BLACKROCK,DEBUG)
+% ExperimentStart('Test',2,0,0)
+% ExperimentStart('bravo1',4,1,0)
 % function ExperimentStart(Subject,ControlMode)
 % Subject - string for the subject id
 % ControlMode - [1,2,3,4] for mouse pos, mouse vel, pos/vel kalman, vel
@@ -253,17 +255,17 @@ try
     
     % Imagined Cursor Movements Loop
     if Params.NumImaginedBlocks>0,
-        [Neuro,KF,Params] = RunTask(Params,Neuro,1,KF);
+        [Neuro,KF,Params,Clicker] = RunTask(Params,Neuro,1,KF,Clicker);
     end
     
     % Adaptation Loop
     if Params.NumAdaptBlocks>0,
-        [Neuro,KF,Params] = RunTask(Params,Neuro,2,KF);
+        [Neuro,KF,Params,Clicker] = RunTask(Params,Neuro,2,KF,Clicker);
     end
     
     % Fixed Decoder Loop
     if Params.NumFixedBlocks>0,
-        [Neuro,KF,Params] = RunTask(Params,Neuro,3,KF);
+        [Neuro,KF,Params,Clicker] = RunTask(Params,Neuro,3,KF,Clicker);
     end
     
     % Pause and Finish!

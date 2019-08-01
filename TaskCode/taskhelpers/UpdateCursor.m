@@ -1,4 +1,4 @@
-function [KF,Params] = UpdateCursor(Params,Neuro,TaskFlag,TargetPos,KF)
+function [KF,Params] = UpdateCursor(Params,Neuro,TaskFlag,TargetPos,KF,Clicker)
 % UpdateCursor(Params,Neuro)
 % Updates the state of the cursor using the method in Params.ControlMode
 %   1 - position control

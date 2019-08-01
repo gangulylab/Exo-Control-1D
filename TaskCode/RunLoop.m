@@ -1,4 +1,4 @@
-function [Neuro,KF,Params] = RunLoop(Params,Neuro,TaskFlag,DataDir,KF)
+function [Neuro,KF,Params,Clicker] = RunLoop(Params,Neuro,TaskFlag,DataDir,KF,Clicker)
 % Defines the structure of collected data on each trial
 % Loops through blocks and trials within blocks
 
@@ -17,6 +17,7 @@ DataFields = struct(...
     'Time',[],...
     'CursorAssist',[],...
     'CursorState',[],...
+    'ClickerState',[],...
     'PlanarState',[],...
     'IntendedCursorState',[],...
     'KalmanFilter',[],...
@@ -51,6 +52,7 @@ for Block=1:NumBlocks, % Block Loop
     % random order of reach targets for each block
     TargetOrder = Params.TargetFunc(Params.NumTrialsPerBlock);
     Cursor.State = [0,0,1]';
+    Cursor.ClickState=0;
     Cursor.IntendedState = [0,0,1]';
     Cursor.Vcommand = [0]';
 
@@ -101,7 +103,7 @@ for Block=1:NumBlocks, % Block Loop
         % Run Trial
         TrialData.TrialStartTime  = GetSecs;
         if Params.SerialSync, fprintf(Params.SerialPtr, '%s\n', 'TST'); end
-        [TrialData,Neuro,KF,Params] = RunTrial(TrialData,Params,Neuro,TaskFlag,KF);
+        [TrialData,Neuro,KF,Params,Clicker] = RunTrial(TrialData,Params,Neuro,TaskFlag,KF,Clicker);
         if Params.SerialSync, fprintf(Params.SerialPtr, '%s\n', 'TET'); end
         TrialData.TrialEndTime    = GetSecs;
                 

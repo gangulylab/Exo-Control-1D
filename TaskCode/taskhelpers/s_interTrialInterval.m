@@ -70,7 +70,8 @@ if ~Data.ErrorID && Params.InterTrialInterval>0,
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
-
+            Data.ClickerState(1,end+1) = Cursor.ClickState;
+            
             CursorRect = Params.CursorRect;
             x = Cursor.State(1)*cosd(Params.MvmtAxisAngle);
             y = Cursor.State(1)*sind(Params.MvmtAxisAngle);
