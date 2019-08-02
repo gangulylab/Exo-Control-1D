@@ -1,4 +1,4 @@
-function ExperimentStop(fro mPause,Params)
+function ExperimentStop(fromPause,Params)
 if ~exist('fromPause', 'var'), fromPause = 0; end
 
 % Put the planar into a safe state
