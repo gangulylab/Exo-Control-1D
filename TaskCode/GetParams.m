@@ -45,7 +45,8 @@ if strcmpi(Params.Subject,'Test'),
 end
 
 if IsWin,
-    projectdir = 'D:\new_planar\Exo-Control-1D';
+    %projectdir = 'D:\new_planar\Exo-Control-1D';
+     projectdir ='C:\Users\test\Documents\GitHub\Exo-Control-1D\';
 elseif IsOSX,
     projectdir = '/Users/daniel/Projects/Exo-Control-1D/';
 else,
@@ -65,7 +66,7 @@ Params.SerialSync = false;
 Params.SyncDev = '/dev/ttyS1';
 Params.BaudRate = 115200;
 
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
@@ -185,7 +186,7 @@ Params.ErrorSoundFs = 8192;
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% BlackRock Params
-Params.GenNeuralFeaturesFlag = false;
+Params.GenNeuralFeaturesFlag = true;
 Params.ZscoreRawFlag = true;
 Params.UpdateChStatsFlag = false;
 Params.ZscoreFeaturesFlag = true;

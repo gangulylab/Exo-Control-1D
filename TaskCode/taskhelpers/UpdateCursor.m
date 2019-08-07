@@ -32,10 +32,15 @@ end
 % decode click
  if Params.GenNeuralFeaturesFlag,
     [~,~,B] = GetMouse();
-    Clicking = any(B);
+    if any(B),
+        Clicking = -1;
+    else,
+        Clicking = 0;
+    end
 else,
     Clicking = Clicker.Func(Neuro.NeuralFeatures);
-end
+ end
+
 % must click for X bins in a row
 if Clicking==-1, % clicking
     Cursor.ClickState = Cursor.ClickState + 1;
