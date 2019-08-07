@@ -41,15 +41,22 @@ end
 %% TRIAL CODE START
 %%==========================================================================================================================
 
-protocolSelect = 0;
+protocolSelect = 4;
 switch protocolSelect
     case 0
-        s_protocolVRAGVRAR;
-%         s_protocol1DClose;
+        s_protocol1DClose;
     case 1
-%         s_protocolRGRR;
+        s_protocolRGRR;
     case 2
-%         s_protocolRR;
+        fprintf('\n\tProtocol: Volitional Reach & Return\n')
+        s_protocolRR;
+    case 3
+        fprintf('\n\tProtocol: Volitional Reach, Automated Grasp, Volitional Return & Automatic Release\n')
+        s_protocolVRAGVRAR;
+        
+    case 4
+        fprintf('\n\tProtocol: Volitional Reach, Click Grasp, Volitional Return & Click Release\n')
+        s_protocolVRAGVRARClick;
 end
 
 

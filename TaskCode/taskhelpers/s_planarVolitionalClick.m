@@ -1,4 +1,4 @@
-% s_planarVolitional
+% s_planarVolitionalClick
 %% Go to reach target
 % Enable planar into velocity control mode for reach from home to target
 Params.Arduino.planar.enable            = 1;    % 1-bit     Move to target, or accept sent velocities
@@ -111,11 +111,7 @@ if ~Data.ErrorID,
             Data.PlanarState(:,end+1) = Params.Arduino.planar.pos(1);
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
-<<<<<<< Updated upstream
-            Data.ClickerState(1,end+1) = Cursor.ClickState;
-=======
             
->>>>>>> Stashed changes
             % reach target
             ReachRect = Params.TargetRect; % centered at (0,0)
             x = ReachTargetPos*cosd(Params.MvmtAxisAngle);
@@ -134,14 +130,6 @@ if ~Data.ErrorID,
             
             % draw
             
-            % cursor color
-            if Cursor.ClickState>0, % if clicking change cursor col
-                CursorCol = Params.ClickingColor;
-            else,
-                CursorCol = Params.CursorColor;
-            end
-            
-            % draw targets and cursor
             switch Params.Arduino.planar.target
                 case 0
                     inFlag = InTarget(Cursor,StartTargetPos,Params.TargetSize);
@@ -149,7 +137,7 @@ if ~Data.ErrorID,
                     else, StartCol = Params.OutTargetColor;
                     end
                     Screen('FillOval', Params.WPTR, ...
-                        cat(1,StartCol,CursorCol)', ...
+                        cat(1,StartCol,Params.CursorColor)', ...
                         cat(1,StartRect,CursorRect)')
                 otherwise
                     inFlag = InTarget(Cursor,ReachTargetPos,Params.TargetSize);
@@ -157,7 +145,7 @@ if ~Data.ErrorID,
                     else, ReachCol = Params.OutTargetColor;
                     end
                     Screen('FillOval', Params.WPTR, ...
-                        cat(1,ReachCol,CursorCol)', ...
+                        cat(1,ReachCol,Params.CursorColor)', ...
                         cat(1,ReachRect,CursorRect)')
             end
             
@@ -190,19 +178,13 @@ if ~Data.ErrorID,
             
             Screen('DrawingFinished', Params.WPTR);
             Screen('Flip', Params.WPTR);
-<<<<<<< Updated upstream
-
-            % end if clicking for long enough
-            if inFlag && Cursor.ClickState==Params.ClickerBins, 
-                done = 1;
-=======
             
             % start counting time if cursor is in target
-            if inFlag,
-                InTargetTotalTime = InTargetTotalTime + dt;
+            if (inFlag) && (Cursor.ClickState == Params.ClickerBins)
+                done = 1;
+                Params.successfulReach = 1;
             else
                 InTargetTotalTime = 0;
->>>>>>> Stashed changes
             end
         end
         

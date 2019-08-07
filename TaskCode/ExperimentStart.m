@@ -67,7 +67,8 @@ if Params.ArduinoSync,
                                                             .*(2^Params.Arduino.planar.velParams.bits-1));
 
 % 	Params.Arduino.planar.posParams.screenResolution  = [1920,1080];  % Fancy B1 Monitor
-	Params.Arduino.planar.posParams.screenResolution  = [1680,1050];  % Monitor in 133SDH
+% 	Params.Arduino.planar.posParams.screenResolution  = [1680,1050];  % Monitor in 133SDH
+	Params.Arduino.planar.posParams.screenResolution  = [2880,1620];  % Rob's laptop
 % 	Params.Arduino.planar.posParams.screenResolution  = [1920,1200];  % Star Monitor in 133SDH
 % 	Params.Arduino.planar.posParams.screenResolution  = [1600,900];   % Labtop
     Params.Arduino.planar.posParams.planarBounds      = [-300,300,-10,300];   % mm
@@ -210,11 +211,12 @@ if strcmpi(str,'n'),
 end
 
 %% Initialize Window
-% Screen('Preference', 'SkipSyncTests', 0);
+if Params.skipSync == 1
+Screen('Preference', 'SkipSyncTests', 1);
+end
 if DEBUG
     [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', 0, 0, [50 50 1000 1000]);
 else
-%     Screen('Preference', 'SkipSyncTests', 1);
     [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', max(Screen('Screens')), 0);
 end
 Params.Center = [mean(Params.ScreenRectangle([1,3])),mean(Params.ScreenRectangle([2,4]))];

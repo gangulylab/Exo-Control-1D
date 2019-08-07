@@ -7,8 +7,11 @@ if ~Data.ErrorID && Params.InterTrialInterval>0,
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Inter Trial Interval';
     if Params.SerialSync, fprintf(Params.SerialPtr, '%s\n', 'ITI'); end
-    if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
-
+    switch Params.PlanarConnected
+        case 1
+            if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
+    end
+    
     if TaskFlag==1,
         OptimalCursorTraj = ...
             GenerateCursorTraj(Cursor.State(1),Cursor.State(1),Params.InterTrialInterval,Params);
@@ -61,9 +64,9 @@ if ~Data.ErrorID && Params.InterTrialInterval>0,
 
             % cursor
             if TaskFlag==1, % imagined movements
-                Cursor.State(2) = (OptimalCursorTraj(ct)'-Cursor.State(1))/dt;
-                Cursor.State(1) = OptimalCursorTraj(ct);
-                Cursor.Vcommand = Cursor.State(2);
+%                 Cursor.State(2) = (OptimalCursorTraj(ct)'-Cursor.State(1))/dt;
+%                 Cursor.State(1) = OptimalCursorTraj(ct);
+%                 Cursor.Vcommand = Cursor.State(2);
 %                 disp(Cursor.State')
                 ct = ct + 1;
             end
