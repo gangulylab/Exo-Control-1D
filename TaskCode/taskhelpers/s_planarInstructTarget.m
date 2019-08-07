@@ -11,17 +11,20 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Instructed Delay';
     if Params.SerialSync, fprintf(Params.SerialPtr, '%s\n', 'ID'); end
-    if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
+    switch Params.PlanarConnected
+        case 1
+            if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
+    end
 
     if TaskFlag==1,
         switch Params.Arduino.planar.target
             case 0
                 OptimalCursorTraj = ...
-                    GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
+                    GenerateCursorTraj(Params.Arduino.planar.pos(1),StartTargetPos,Params.InstructedDelayTime,Params);
                 ct = 1;
             otherwise
                 OptimalCursorTraj = ...
-                    GenerateCursorTraj(ReachTargetPos,ReachTargetPos,Params.InstructedDelayTime,Params);
+                    GenerateCursorTraj(Params.Arduino.planar.pos(1),ReachTargetPos,Params.InstructedDelayTime,Params);
                 ct = 1;
         end
     end
@@ -76,9 +79,9 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
 
             % cursor
             if TaskFlag==1, % imagined movements
-                Cursor.State(2) = (OptimalCursorTraj(ct)'-Cursor.State(1))/dt;
-                Cursor.State(1) = OptimalCursorTraj(ct);
-                Cursor.Vcommand = Cursor.State(2);
+%                 Cursor.State(2) = (OptimalCursorTraj(ct)'-Cursor.State(1))/dt;
+%                 Cursor.State(1) = OptimalCursorTraj(ct);
+%                 Cursor.Vcommand = Cursor.State(2);
                 ct = ct + 1;
             end
             CursorRect = Params.CursorRect;

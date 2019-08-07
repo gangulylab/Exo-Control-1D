@@ -199,6 +199,10 @@ Params.Arduino = UpdateArduino(Params.Arduino);
 % Cursor.State(1) = pos;
 
 % Cursor position assumes planar position
-Cursor.State(1) = Params.Arduino.planar.pos(1);
+
+switch Params.PlanarConnected 
+    case 1
+        Cursor.State(1) = Params.Arduino.planar.pos(1);
+end
 
 end % UpdateCursor

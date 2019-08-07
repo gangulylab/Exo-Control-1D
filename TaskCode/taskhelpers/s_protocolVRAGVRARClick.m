@@ -1,12 +1,10 @@
-% s_protocolVRAGVRAR
+% s_protocolVRAGVRARClick
 % Volitional reach, auto-grasp, volitional return, auto release
 
 % Move Planar system to the home position then disable it.
 Params.Arduino.planar.target        = 0;    % 1-bit     Move to Home
 Params.Arduino.glove.enable         = 1;    % 1-bit     Enable Glove
 Params.Arduino.glove.admittanceMode = 1;    % 1-bit     Set glove to admittance mode to reduce strain in hand
-
-% initialization; reset the planar exo to the home position 
 s_planarForceState;
 
 % Offer tempoary respite between trials
@@ -24,21 +22,15 @@ switch idx
     otherwise
         Params.Arduino.planar.target           = 0;
 end
-
-% initialization; Changing the LEDs 
 s_planarInstructTarget;
 Params.successfulReach = 0;
 
-% Perform the following tasks in order
-
 % Set glove to open
-if Data.ErrorID==0,
-    Params.Arduino.glove.target = 2;
-    s_gloveForceState
-end
+Params.Arduino.glove.target = 2;
+s_gloveForceState
 
 % Allow volitional movements
-s_planarVolitional;
+s_planarVolitionalClick;
 
 % Force to target
 if Params.successfulReach == 0
@@ -46,18 +38,11 @@ if Params.successfulReach == 0
 end
 
 % Set glove to close
-<<<<<<< Updated upstream
-if Data.ErrorID==0,
-    Params.Arduino.glove.target = 0;
-    s_gloveForceState;
-end
-=======
 if Params.successfulReach == 1
     Params.Arduino.glove.target = 0;
     s_gloveForceState;
 end
 
->>>>>>> Stashed changes
 
 % Instruct to go Home
 Params.Arduino.planar.target = 0;
@@ -65,13 +50,8 @@ s_planarInstructTarget;
 Params.successfulReach = 0;
 
 % Allow volitional movements
-s_planarVolitional;
+s_planarVolitionalClick;
 
-% Set glove to open
-if Data.ErrorID==0,
-    Params.Arduino.glove.target = 2;
-    s_gloveForceState
-end
 
 % On completion of attempted return motion, disable planar and switch to position mode
 Params.Arduino.planar.enable        = 0;    % 1-bit     Disable planar

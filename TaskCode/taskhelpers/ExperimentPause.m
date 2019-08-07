@@ -16,7 +16,10 @@ Params.Arduino = UpdateArduino(Params.Arduino);
 Data.Events(end+1).Time = GetSecs;
 Data.Events(end).Str  = 'Pause';
 if Params.SerialSync, fprintf(Params.SerialPtr, '%s\n', 'P0'); end
-if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
+switch Params.PlanarConnected
+    case 1
+        if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
+end
 
 KbCheck;
 WaitSecs(.1);

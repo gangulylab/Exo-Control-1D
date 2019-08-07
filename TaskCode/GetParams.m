@@ -46,7 +46,8 @@ end
 
 if IsWin,
     %projectdir = 'D:\new_planar\Exo-Control-1D';
-     projectdir ='C:\Users\test\Documents\GitHub\Exo-Control-1D\';
+%      projectdir ='C:\Users\test\Documents\GitHub\Exo-Control-1D\';
+    projectdir = 'C:\new_planar\Exo-Control-1D-Plus-Clicker\Exo-Control-1D';
 elseif IsOSX,
     projectdir = '/Users/daniel/Projects/Exo-Control-1D/';
 else,
@@ -67,6 +68,11 @@ Params.SyncDev = '/dev/ttyS1';
 Params.BaudRate = 115200;
 
 Params.ArduinoSync = false;
+
+%%
+Params.PlanarConnected          = 0;    % is the planar hardware connected? 
+Params.skipSync                 = 1;    % Do you want to skip teh VSync tests?
+% Params.GenNeuralFeaturesFlag    = true; % 
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz

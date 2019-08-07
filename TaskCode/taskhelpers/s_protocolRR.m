@@ -24,7 +24,6 @@ end
 s_planarInstructTarget;
 
 
-
 % Allow volitional movements
 s_planarVolitional;
 
