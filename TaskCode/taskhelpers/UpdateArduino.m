@@ -22,7 +22,7 @@ function [Arduino] = UpdateArduino(Arduino)
         
         byte5   = byteGloveMode;
         
-        if ~isnan(Arduino.devBBS)
+        if numel(class(Arduino.devBBS))==16
             %% Write to BBS
             write(Arduino.devBBS,[byte1,byte2,byte3,byte4,byte5])
             

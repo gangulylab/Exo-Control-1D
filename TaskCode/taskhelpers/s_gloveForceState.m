@@ -1,6 +1,8 @@
 % s_gloveForceState
 Params.Arduino.glove.enable         = 1;    % 1-bit     Move to target, or accept sent velocities
 Params.Arduino.glove.admittanceMode = 0;    % 1-bit     Set planar to position control mode
+
+Params.Arduino.planar.enable            = 0;
 Params.Arduino = UpdateArduino(Params.Arduino);
 
 Data.ErrorID = 0;

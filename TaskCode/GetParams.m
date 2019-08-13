@@ -24,7 +24,7 @@ Params.CLDA.Type        = 3;        % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'none';   % {'none','linear'}, affects assistance & lambda for rml
 Params.InitializationMode =4;      % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
 Params.MvmtAxisAngle    = 0;        
-Params.BaselineTime     = 2;        % secs
+Params.BaselineTime     = 0;        % secs
 
 %% Cursor Click
 Params.ClickerBins = 1;
@@ -47,7 +47,8 @@ end
 if IsWin,
     %projectdir = 'D:\new_planar\Exo-Control-1D';
 %      projectdir ='C:\Users\test\Documents\GitHub\Exo-Control-1D\';
-    projectdir = 'C:\new_planar\Exo-Control-1D-Plus-Clicker\Exo-Control-1D';
+%     projectdir = 'C:\new_planar\Exo-Control-1D-Plus-Clicker\Exo-Control-1D';
+    projectdir = 'D:\ganguly_planar\Exo-Control-1D\';
 elseif IsOSX,
     projectdir = '/Users/daniel/Projects/Exo-Control-1D/';
 else,
@@ -70,8 +71,8 @@ Params.BaudRate = 115200;
 Params.ArduinoSync = false;
 
 %%
-Params.PlanarConnected          = 0;    % is the planar hardware connected? 
-Params.skipSync                 = 1;    % Do you want to skip teh VSync tests?
+Params.PlanarConnected          = 1;    % is the planar hardware connected? 
+Params.skipSync                 = 0;    % Do you want to skip the VSync tests?
 % Params.GenNeuralFeaturesFlag    = true; % 
 
 %% Timing
