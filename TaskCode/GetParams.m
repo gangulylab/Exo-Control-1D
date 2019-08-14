@@ -28,8 +28,7 @@ Params.BaselineTime     = 2;        % secs
 
 %% Cursor Click
 Params.ClickerBins = 1;
-Params.ClickingColor = [235, 52, 189];
-
+Params.ClickingColor = [255, 0, 0];
 %% Current Date and Time
 % get today's date
 now = datetime;
@@ -46,7 +45,7 @@ end
 
 if IsWin,
     %projectdir = 'D:\new_planar\Exo-Control-1D';
-%      projectdir ='C:\Users\test\Documents\GitHub\Exo-Control-1D\';
+    %projectdir ='C:\Users\test\Documents\GitHub\Exo-Control-1D\';
     projectdir = 'C:\new_planar\Exo-Control-1D-Plus-Clicker\Exo-Control-1D';
 elseif IsOSX,
     projectdir = '/Users/daniel/Projects/Exo-Control-1D/';

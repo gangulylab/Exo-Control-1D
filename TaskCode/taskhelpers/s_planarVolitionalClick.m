@@ -111,6 +111,7 @@ if ~Data.ErrorID,
             Data.PlanarState(:,end+1) = Params.Arduino.planar.pos(1);
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
+            Data.ClickerState(1,end+1) = Cursor.ClickState;
             
             % reach target
             ReachRect = Params.TargetRect; % centered at (0,0)
@@ -130,6 +131,13 @@ if ~Data.ErrorID,
             
             % draw
             
+            if Cursor.ClickState>0, % if clicking change cursor col
+                CursorCol = Params.ClickingColor;
+            else,
+                CursorCol = Params.CursorColor;
+            end
+            
+            
             switch Params.Arduino.planar.target
                 case 0
                     inFlag = InTarget(Cursor,StartTargetPos,Params.TargetSize);
@@ -137,7 +145,7 @@ if ~Data.ErrorID,
                     else, StartCol = Params.OutTargetColor;
                     end
                     Screen('FillOval', Params.WPTR, ...
-                        cat(1,StartCol,Params.CursorColor)', ...
+                        cat(1,StartCol,CursorCol)', ...
                         cat(1,StartRect,CursorRect)')
                 otherwise
                     inFlag = InTarget(Cursor,ReachTargetPos,Params.TargetSize);
@@ -145,7 +153,7 @@ if ~Data.ErrorID,
                     else, ReachCol = Params.OutTargetColor;
                     end
                     Screen('FillOval', Params.WPTR, ...
-                        cat(1,ReachCol,Params.CursorColor)', ...
+                        cat(1,ReachCol,CursorCol)', ...
                         cat(1,ReachRect,CursorRect)')
             end
             
