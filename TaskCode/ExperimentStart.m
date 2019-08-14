@@ -74,8 +74,8 @@ end
 
 % 	Params.Arduino.planar.posParams.screenResolution  = [1920,1080];  % Fancy B1 Monitor
 % 	Params.Arduino.planar.posParams.screenResolution  = [1680,1050];  % Monitor in 133SDH
-	Params.Arduino.planar.posParams.screenResolution  = [2880,1620];  % Rob's laptop
-% 	Params.Arduino.planar.posParams.screenResolution  = [1920,1200];  % Star Monitor in 133SDH
+% 	Params.Arduino.planar.posParams.screenResolution  = [2880,1620];  % Rob's laptop
+	Params.Arduino.planar.posParams.screenResolution  = [1920,1200];  % Leeann/Star Monitor in 133SDH
 % 	Params.Arduino.planar.posParams.screenResolution  = [1600,900];   % Labtop
     Params.Arduino.planar.posParams.planarBounds      = [-300,300,-10,300];   % mm
     Params.Arduino.planar.posParams.planarPlotLoc     = [Params.Arduino.planar.posParams.screenResolution(1)/2,...

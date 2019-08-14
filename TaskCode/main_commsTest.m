@@ -28,7 +28,7 @@ Params.Arduino.planar.posParams.f_bits2pos   = @(bits) ((double(bits)./(2^Params
                                                 +Params.Arduino.planar.posParams.minPos);
 
 %%
-Params.Arduino.glove.target         = 0;    % 4-bits    For 16 targets
+Params.Arduino.glove.target         =  2;    % 4-bits    For 16 targets
                                             % 0: Close, 2: Open 
     
 Params.Arduino.planar.enable        = 1;    % 1-bit     Turn planar on and off

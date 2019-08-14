@@ -26,7 +26,7 @@ WaitSecs(.1);
 while 1, % pause until subject presses p again or quits
     [~, ~, keyCode, ~] = KbCheck;
     if keyCode(KbName('p'))==1,
-        fprint('\tUn-pause\n')
+        fprintf('\tUn-pause\n')
         keyCode(KbName('p'))=0; % set to 0 to avoid multiple pauses in a row
         fprintf('\b') % remove input keys
         Params.Arduino.planar.enable    = 1;    % Enable Planar
