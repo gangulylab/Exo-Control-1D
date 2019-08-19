@@ -83,9 +83,9 @@ if ~Data.ErrorID,
                 
                 switch Params.Arduino.planar.target
                     case 0
-                        [KF,Params] = UpdateCursor(Params,Neuro,TaskFlag,StartTargetPos,KF);
+                        [KF,Params] = UpdateCursor(Params,Neuro,TaskFlag,StartTargetPos,KF,Clicker);
                     otherwise
-                        [KF,Params] = UpdateCursor(Params,Neuro,TaskFlag,ReachTargetPos,KF);
+                        [KF,Params] = UpdateCursor(Params,Neuro,TaskFlag,ReachTargetPos,KF,Clicker);
                 end
                 
                 %                 Params = PositionArduino(Params);

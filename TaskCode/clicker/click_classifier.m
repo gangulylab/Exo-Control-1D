@@ -16,7 +16,7 @@ if size(X,1) ~= 1
 end
 
 distance_from_boundary = X(129:end)*model.w'; % ignoring delta phase info
-if distance_from_boundary>-0.5, % not clicking
+if distance_from_boundary>-0.2, % not clicking
     decision = 1;
 else, % clicking
     decision = -1;

@@ -28,7 +28,7 @@ Params.BaselineTime     = 0;        % secs
 
 %% Cursor Click
 Params.ClickerBins = 1;
-Params.ClickingColor = [255, 0, 0];
+Params.ClickingColor = [255, 255, 255];
 %% Current Date and Time
 % get today's date
 now = datetime;
@@ -52,11 +52,11 @@ if IsWin,
 elseif IsOSX,
     projectdir = '/Users/daniel/Projects/Exo-Control-1D/';
 else,
-    projectdir = '~/Projects/GangulyLab/Exo-Control-1D/';
+%     projectdir = '~/Projects/GangulyLab/Exo-Control-1D/';
+    projectdir = '~/Projects/Exo-Control-1D/';
     butter(1,[.1,.5]);
 end
 addpath(genpath(fullfile(projectdir,'TaskCode')));
-
 % create folders for saving
 Params.ProjectDir = projectdir;
 datadir = fullfile(projectdir,'Data',Params.Subject,Params.YYYYMMDD,Params.HHMMSS);
@@ -68,7 +68,7 @@ Params.SerialSync = false;
 Params.SyncDev = '/dev/ttyS1';
 Params.BaudRate = 115200;
 
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %%
 Params.PlanarConnected          = 1;    % is the planar hardware connected? 
@@ -102,7 +102,7 @@ Params.CursorRect = [-Params.CursorSize -Params.CursorSize ...
     +Params.CursorSize +Params.CursorSize];
 
 %% Kalman Filter Properties
-a = 0.825;
+a = 0.85;%0.825;
 w = 150;
 G = Params.Gain;
 t = 1/Params.UpdateRate;
@@ -179,9 +179,9 @@ Params.InterTrialInterval = 1;
 Params.InstructedGraspTime = 8;
 Params.InstructedDelayTime = 0.1;
 Params.MaxStartTime = 20;
-Params.MaxReachTime = 20;
+Params.MaxReachTime = 30;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
-Params.ImaginedMvmtTime = 6;
+Params.ImaginedMvmtTime = 10;
  
 %% Feedback
 Params.FeedbackSound = false;
@@ -193,7 +193,7 @@ Params.ErrorSoundFs = 8192;
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% BlackRock Params
-Params.GenNeuralFeaturesFlag = true;
+Params.GenNeuralFeaturesFlag = false;
 Params.ZscoreRawFlag = true;
 Params.UpdateChStatsFlag = false;
 Params.ZscoreFeaturesFlag = true;
